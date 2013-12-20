@@ -120,7 +120,6 @@ AP_GPS_UBLOX::send_next_rate_update(void)
     if (rate_update_step > 7) {
         need_rate_update = false;
         rate_update_step = 0;
-        break;
     }
 }
 
@@ -486,11 +485,11 @@ AP_GPS_UBLOX::_parse_gps(void)
         break;
     case MSG_DGPS:
         Debug("MSG_DGPS");
-        if (_debug_port) {
+        /*if (_debug_port) {
             _debug_port->printf("DGPS age=%d numCh=%u\n", 
                                 (int)_buffer.dgps.age, 
                                 (unsigned)_buffer.dgps.numCh);
-        }
+        }*/
         break;
     default:
         Debug("Unexpected NAV message 0x%02x", (unsigned)_msg_id);

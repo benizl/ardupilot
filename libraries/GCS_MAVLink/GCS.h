@@ -323,7 +323,7 @@ private:
 
     // return true if this channel has hardware flow control
     bool have_flow_control(void);
-    void handle_gps_inject(const mavlink_message_t *msg, AP_GPS *gps);
+    void handle_gps_inject(const mavlink_message_t *msg, AP_GPS &gps);
     
 };
 

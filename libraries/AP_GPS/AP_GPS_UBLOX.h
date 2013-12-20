@@ -188,6 +188,7 @@ private:
         uint32_t reserved1[2];
         uint32_t postStatus;
         uint32_t reserved2;
+    };
     struct PACKED ubx_nav_dgps_data {
         uint8_t svid;
         uint8_t flags;
@@ -237,7 +238,7 @@ private:
         MSG_CFG_SET_RATE = 0x01,
         MSG_CFG_NAV_SETTINGS = 0x24,
         MSG_MON_HW = 0x09,
-        MSG_MON_HW2 = 0x0B
+        MSG_MON_HW2 = 0x0B,
         MSG_DGPS = 0x31,
     };
     enum ubs_nav_fix_type {

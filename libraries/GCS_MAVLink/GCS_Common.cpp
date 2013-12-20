@@ -1033,13 +1033,12 @@ void GCS_MAVLINK::send_radio_in(uint8_t receiver_rssi)
 #endif
 }
 
-void GCS_MAVLINK::handle_gps_inject(const mavlink_message_t *msg, AP_GPS *gps)
+void GCS_MAVLINK::handle_gps_inject(const mavlink_message_t *msg, AP_GPS &gps)
 {
     mavlink_gps_inject_data_t packet;
     mavlink_msg_gps_inject_data_decode(msg, &packet);
     if (mavlink_check_target(packet.target_system, packet.target_component))
         return;
-    if (gps != NULL) {
-        gps->inject_data(packet.data, packet.len);
-    }    
+
+    gps.inject_data(packet.data, packet.len);   
 }
