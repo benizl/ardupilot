@@ -304,6 +304,8 @@ public:
 #endif
 #endif
 
+    void inject_data(const uint8_t *data, int len);
+
 private:
     struct GPS_timing {
         // the time we got our last fix in system milliseconds

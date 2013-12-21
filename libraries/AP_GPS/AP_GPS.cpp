@@ -419,6 +419,11 @@ AP_GPS::lock_port(uint8_t instance, bool lock)
     }
 }
 
+void AP_GPS::inject_data(const uint8_t *data, int len)
+{
+    drivers[0]->port->write(data, len);
+}
+
 void 
 AP_GPS::send_mavlink_gps_raw(mavlink_channel_t chan)
 {
