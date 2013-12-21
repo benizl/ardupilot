@@ -1331,6 +1331,10 @@ void GCS_MAVLINK::handleMessage(mavlink_message_t* msg)
         break;
 #endif // MOUNT == ENABLED
 
+    case MAVLINK_MSG_ID_GPS_INJECT_DATA:
+        handle_gps_inject(msg, gps);
+        break;
+
 #if AC_RALLY == ENABLED
     // receive a rally point from GCS and store in EEPROM
     case MAVLINK_MSG_ID_RALLY_POINT: {
@@ -1360,6 +1364,24 @@ void GCS_MAVLINK::handleMessage(mavlink_message_t* msg)
 
         if (!rally.set_rally_point_with_index(packet.idx, rally_point)) {
             send_text_P(SEVERITY_HIGH, PSTR("error setting rally point"));
+        }
+    }
+#endif
+
+/* To-Do: add back support for polygon type fence */
+#if 0 //AC_FENCE == ENABLED
+    // receive an AP_Limits fence point from GCS and store in EEPROM
+    // receive a fence point from GCS and store in EEPROM
+    case MAVLINK_MSG_ID_FENCE_POINT: {
+        mavlink_fence_point_t packet;
+        mavlink_msg_fence_point_decode(msg, &packet);
+        if (packet.count != geofence_limit.fence_total()) {
+            send_text_P(SEVERITY_LOW,PSTR("bad fence point"));
+        } else {
+            Vector2l point;
+            point.x = packet.lat*1.0e7f;
+            point.y = packet.lng*1.0e7f;
+            geofence_limit.set_fence_point_with_index(point, packet.idx);
         }
 
         break;
