@@ -111,7 +111,7 @@ static void init_ardupilot()
 #if GPS_PROTOCOL != GPS_PROTOCOL_IMU
     // standard gps running. Note that we need a 256 byte buffer for some
     // GPS types (eg. UBLOX)
-    hal.uartB->begin(38400, 256, 16);
+    hal.uartB->begin(115200, 256, 16);
 #endif
 
     cliSerial->printf_P(PSTR("\n\nInit " THISFIRMWARE

@@ -424,15 +424,26 @@ static void NOINLINE send_raw_imu1(mavlink_channel_t chan)
 {
     Vector3f accel = ins.get_accel();
     Vector3f gyro = ins.get_gyro();
+
+
+
+
+    accel.x=O2;
+    accel.y=CO2;
+    accel.z =CO.N;
+    gyro.x=NO.N;
+    gyro.y=NO2.N;
+    gyro.z=SO2.N;
+    compass.mag_x=H2S.N;
     mavlink_msg_raw_imu_send(
         chan,
         micros(),
-        accel.x * 1000.0f / GRAVITY_MSS,
-        accel.y * 1000.0f / GRAVITY_MSS,
-        accel.z * 1000.0f / GRAVITY_MSS,
-        gyro.x * 1000.0f,
-        gyro.y * 1000.0f,
-        gyro.z * 1000.0f,
+        accel.x,
+        accel.y ,
+        accel.z,
+        gyro.x ,
+        gyro.y,
+        gyro.z,
         compass.mag_x,
         compass.mag_y,
         compass.mag_z);

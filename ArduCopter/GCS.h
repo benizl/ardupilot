@@ -201,4 +201,59 @@ private:
     uint32_t _cli_timeout;
 };
 
+unsigned int O2;
+unsigned int CO2;
+
+    union
+    {
+         int N;
+        unsigned char B[2];
+    }CO;
+    union
+    {
+         int N;
+        unsigned char B[2];
+    }NO;
+    union
+    {
+         int N;
+        unsigned char B[2];
+    }NO2;
+    union
+    {
+         int N;
+        unsigned char B[2];
+    }SO2;
+    union
+    {
+         int N;
+        unsigned char B[2];
+    }H2S;
+
+     union
+    {
+         int N;
+        unsigned char B[2];
+    }COC;
+    union
+    {
+         int N;
+        unsigned char B[2];
+    }NOC;
+    union
+    {
+         int N;
+        unsigned char B[2];
+    }NO2C;
+    union
+    {
+         int N;
+        unsigned char B[2];
+    }SO2C;
+    union
+    {
+         int N;
+        unsigned char B[2];
+    }H2SC;
+
 #endif // __GCS_H
