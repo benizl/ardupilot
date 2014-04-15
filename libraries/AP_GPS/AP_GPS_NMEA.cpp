@@ -80,6 +80,14 @@ const prog_char AP_GPS_NMEA::_ublox_init_string[] PROGMEM =
     "$PUBX,40,rmc,0,0,0,0,0,0*67\r\n"   // RMC off (XXX suppress other message types?)
     "";
 
+const prog_char AP_GPS_NMEA::_mb100_init_string[] PROGMEM =
+	//"$PASHS,NME,GSV,B,OFF\r\n";
+	"$PASHS,NME,GGA,A,ON,0.2\r\n"
+	"$PASHS,NME,GST,A,OFF\r\n"
+	"$PASHS,NME,GSA,A,OFF\r\n"
+	"$PASHS,NME,GSV,A,OFF\r\n"
+	"";
+
 // NMEA message identifiers ////////////////////////////////////////////////////
 //
 const char AP_GPS_NMEA::_gprmc_string[] PROGMEM = "GPRMC";
@@ -96,13 +104,16 @@ void AP_GPS_NMEA::init(AP_HAL::UARTDriver *s, enum GPS_Engine_Setting nav_settin
 	_port = s;
 
     // send the SiRF init strings
-    _port->print_P((const prog_char_t *)_SiRF_init_string);
+    //_port->print_P((const prog_char_t *)_SiRF_init_string);
 
     // send the MediaTek init strings
-    _port->print_P((const prog_char_t *)_MTK_init_string);
+    //_port->print_P((const prog_char_t *)_MTK_init_string);
 
     // send the ublox init strings
-    _port->print_P((const prog_char_t *)_ublox_init_string);
+    //_port->print_P((const prog_char_t *)_ublox_init_string);
+
+    //send the mb100 init string
+    _port->print_P((const prog_char_t *)_mb100_init_string);
 }
 
 bool AP_GPS_NMEA::read(void)

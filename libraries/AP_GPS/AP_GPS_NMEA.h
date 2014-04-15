@@ -156,6 +156,7 @@ private:
     static const prog_char _SiRF_init_string[];         ///< init string for SiRF units
     static const prog_char _MTK_init_string[];                  ///< init string for MediaTek units
     static const prog_char _ublox_init_string[];        ///< init string for ublox units
+    static const prog_char _mb100_init_string[];
     //@}
 
     /// @name	GPS message identifier strings
