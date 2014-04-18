@@ -95,7 +95,7 @@ private:
     float           yaw_error_compass();
     void            euler_angles(void);
     bool            have_gps(void) const;
-
+    void            update_baro_drift(void);
     // primary representation of attitude of board used for all inertial calculations
     Matrix3f _dcm_matrix;
 
@@ -165,6 +165,9 @@ private:
 
     // estimated wind in m/s
     Vector3f _wind;
+
+    // last gps sample time in ms
+    uint32_t _baro_last_gps;
 };
 
 #endif // __AP_AHRS_DCM_H__
