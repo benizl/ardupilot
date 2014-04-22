@@ -5,8 +5,8 @@ class AP_AHRS_HIL : public AP_AHRS
 {
 public:
     // Constructors
-    AP_AHRS_HIL(AP_InertialSensor &ins, GPS *&gps) : 
-	    AP_AHRS(ins, gps),
+    AP_AHRS_HIL(AP_InertialSensor &ins, AP_Baro &baro, GPS *&gps) : 
+	    AP_AHRS(ins, baro, gps),
 	    _drift()
 		{}
 

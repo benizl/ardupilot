@@ -76,6 +76,8 @@ AP_AHRS_DCM::update(void)
 
     // Calculate pitch, roll, yaw for stabilization and navigation
     euler_angles();
+
+    update_baro_drift();
 }
 
 // update the DCM matrix using only the gyros
@@ -886,3 +888,18 @@ bool AP_AHRS_DCM::airspeed_estimate(float *airspeed_ret)
 	}
 	return ret;
 }
+
+void AP_AHRS_DCM::update_baro_drift(void)
+{
+    if (have_gps() && _gps->status() >= GPS::GPS_OK_FIX_3D) {
+        float dt = (_gps->last_message_time_ms() - _baro_last_gps) / 1000.0;
+        _baro_last_gps = _gps->last_message_time_ms();
+
+        // More than 2 secs since last sample might mess up the filter, just skip
+        if (dt < 2.0 && _gps->altitude_cm != 0) {
+            // If the GPS looks good, use it to update the baro's internal drift estimate
+            _baro.update_drift_estimate(_gps->altitude_cm, dt);
+        }
+    }
+}
+

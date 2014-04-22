@@ -37,9 +37,10 @@ class AP_AHRS
 {
 public:
     // Constructor
-    AP_AHRS(AP_InertialSensor &ins, GPS *&gps) :
+    AP_AHRS(AP_InertialSensor &ins, AP_Baro &baro, GPS *&gps) :
         _compass(NULL),
         _ins(ins),
+        _baro(baro),
         _gps(gps)
     {
         // load default values from var_info table
@@ -277,6 +278,7 @@ protected:
     //       IMU under us without our noticing.
     AP_InertialSensor   &_ins;
     GPS                 *&_gps;
+    AP_Baro             &_baro;
 
     // a vector to capture the difference between the controller and body frames
     AP_Vector3f         _trim;

@@ -25,8 +25,8 @@ class AP_AHRS_DCM : public AP_AHRS
 {
 public:
     // Constructors
-    AP_AHRS_DCM(AP_InertialSensor &ins, GPS *&gps) :
-        AP_AHRS(ins, gps),
+    AP_AHRS_DCM(AP_InertialSensor &ins, AP_Baro &baro, GPS *&gps) :
+        AP_AHRS(ins, baro, gps),
         _last_declination(0),
         _mag_earth(1,0)
     {
@@ -93,6 +93,7 @@ private:
     void            euler_angles(void);
     void            estimate_wind(Vector3f &velocity);
     bool            have_gps(void) const;
+    void            update_baro_drift(void);
 
     // primary representation of attitude of board used for all inertial calculations
     Matrix3f _dcm_matrix;
@@ -162,6 +163,9 @@ private:
 
     // estimated wind in m/s
     Vector3f _wind;
+
+    // last gps sample time in ms
+    uint32_t _baro_last_gps;
 };
 
 #endif // __AP_AHRS_DCM_H__

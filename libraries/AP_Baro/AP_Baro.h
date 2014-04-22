@@ -44,6 +44,8 @@ public:
     // get scale factor required to convert equivalent to true airspeed
     float        get_EAS2TAS(void);
 
+    void         update_drift_estimate(float alt, float dt);
+
     // return how many pressure samples were used to obtain
     // the last pressure reading
     uint8_t        get_pressure_samples(void) {
@@ -84,6 +86,13 @@ private:
     float                               _EAS2TAS;
     uint32_t                            _last_altitude_t;
     DerivativeFilterFloat_Size7         _climb_rate_filter;
+    uint32_t                            _cal_time;
+    float                               _drift_est;
+    float                               _drift_gnd_level;
+    uint16_t                            _drift_init_count;
+    LowPassFilterFloat                  _drift_filter;
+    AP_Float                            _drift_tc;
+    AP_Float                            _drift_init_period;
 };
 
 #include "AP_Baro_MS5611.h"
