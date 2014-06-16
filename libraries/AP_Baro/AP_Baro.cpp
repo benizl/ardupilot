@@ -206,7 +206,7 @@ float AP_Baro::get_climb_rate(void)
 void AP_Baro::update_drift_estimate(float alt, float dt)
 {
     if (hal.scheduler->millis() < _cal_time + _drift_init_period * 1000) {
-        _drift_gnd_level += alt;
+        _drift_gnd_level += alt - _altitude - _alt_offset;
         _drift_init_count++;
     } else {
         float innov;
