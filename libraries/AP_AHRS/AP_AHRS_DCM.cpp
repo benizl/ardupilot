@@ -898,7 +898,7 @@ void AP_AHRS_DCM::update_baro_drift(void)
         // More than 2 secs since last sample might mess up the filter, just skip
         if (dt < 2.0 && _gps->altitude_cm != 0) {
             // If the GPS looks good, use it to update the baro's internal drift estimate
-            _baro.update_drift_estimate(_gps->altitude_cm, dt);
+            _baro.update_drift_estimate(_gps->altitude_cm / 100.0, dt);
         }
     }
 }

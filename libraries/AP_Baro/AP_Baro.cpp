@@ -218,17 +218,20 @@ void AP_Baro::update_drift_estimate(float alt, float dt)
             // We want the estimate to drift from 0 with the same time constant
             // as everything else, otherwise we get an ugly step in the altitude
             // once the ground estimation is complete
+            if (_drift_tc <= 0) {
+                _drift_est = 0;
+                return;
+            }
             _drift_filter.set_time_constant(dt, _drift_tc);
             _drift_est = _drift_filter.apply(0);
         }
 
-        if (_drift_tc < 0) {
+        if (_drift_tc <= 0) {
             _drift_est = 0;
             return;
         }
 
-        innov = _altitude - _drift_est - (alt - _drift_gnd_level);
-
+        innov = _altitude - _alt_offset - _drift_est - (alt - _drift_gnd_level);
         // 5 metre gate here to try and guard against sensor glitching etc,
         // though this is really the caller's responsibility.. TODO: Parameter?
         if (innov < 5.0) {
