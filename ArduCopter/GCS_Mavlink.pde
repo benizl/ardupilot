@@ -447,41 +447,14 @@ static void NOINLINE send_vfr_hud(mavlink_channel_t chan)
 
 static void NOINLINE send_raw_imu1(mavlink_channel_t chan)
 {
-    const Vector3f &accel = ins.get_accel();
-    const Vector3f &gyro = ins.get_gyro();
-    const Vector3f &mag = compass.get_field();
+    /* This function is awefully hacked to send gas sensor values
+     * back to the GCS. This is a temporary solution until we get
+     * around to recoding the GCS to accept a proper gas sensor
+     * message type. */
     mavlink_msg_raw_imu_send(
         chan,
         micros(),
-        accel.x * 1000.0f / GRAVITY_MSS,
-        accel.y * 1000.0f / GRAVITY_MSS,
-        accel.z * 1000.0f / GRAVITY_MSS,
-        gyro.x * 1000.0f,
-        gyro.y * 1000.0f,
-        gyro.z * 1000.0f,
-        mag.x,
-        mag.y,
-        mag.z);
-    if (ins.get_gyro_count() <= 1 &&
-        ins.get_accel_count() <= 1 &&
-        compass.get_count() <= 1) {
-        return;
-    }
-    const Vector3f &accel2 = ins.get_accel(1);
-    const Vector3f &gyro2 = ins.get_gyro(1);
-    const Vector3f &mag2 = compass.get_field(1);
-    mavlink_msg_scaled_imu2_send(
-        chan,
-        millis(),
-        accel2.x * 1000.0f / GRAVITY_MSS,
-        accel2.y * 1000.0f / GRAVITY_MSS,
-        accel2.z * 1000.0f / GRAVITY_MSS,
-        gyro2.x * 1000.0f,
-        gyro2.y * 1000.0f,
-        gyro2.z * 1000.0f,
-        mag2.x,
-        mag2.y,
-        mag2.z);        
+        O2, CO2, CO.N, NO.N, NO2.N, SO2.N, H2S.N, 0, 0);
 }
 
 static void NOINLINE send_raw_imu2(mavlink_channel_t chan)
