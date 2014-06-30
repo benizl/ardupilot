@@ -128,6 +128,11 @@ static void init_arm_motors()
     // disable inertial nav errors temporarily
     inertial_nav.ignore_next_error();
 
+#if LOGGING_ENABLED == ENABLED
+    // start dataflash
+    start_logging();
+#endif
+
 #if HIL_MODE != HIL_MODE_DISABLED || CONFIG_HAL_BOARD == HAL_BOARD_AVR_SITL
     gcs_send_text_P(SEVERITY_HIGH, PSTR("ARMING MOTORS"));
 #endif

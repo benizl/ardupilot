@@ -294,7 +294,6 @@ static void init_ardupilot()
 
 #if LOGGING_ENABLED == ENABLED
     Log_Write_Startup();
-    start_logging();
 #endif
 
     cliSerial->print_P(PSTR("\nReady to FLY "));
