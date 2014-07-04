@@ -143,7 +143,7 @@ float AP_Baro::get_altitude(void)
 
     if (_last_altitude_t == _last_update) {
         // no new information
-        return _altitude + _alt_offset;
+        return _altitude + _alt_offset - _drift_est;
     }
 
 
@@ -165,7 +165,7 @@ float AP_Baro::get_altitude(void)
     _last_altitude_t = _last_update;
 
     // ensure the climb rate filter is updated
-    _climb_rate_filter.update(_altitude, _last_update);
+    _climb_rate_filter.update(_altitude - _drift_est, _last_update);
 
     return _altitude + _alt_offset - _drift_est;
 }
