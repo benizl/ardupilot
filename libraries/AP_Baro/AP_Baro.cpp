@@ -143,7 +143,7 @@ float AP_Baro::get_altitude(void)
 
     if (_last_altitude_t == _last_update) {
         // no new information
-        return _altitude + _alt_offset;
+        return _altitude + _alt_offset + _drift_est;
     }
 
 
@@ -165,9 +165,9 @@ float AP_Baro::get_altitude(void)
     _last_altitude_t = _last_update;
 
     // ensure the climb rate filter is updated
-    _climb_rate_filter.update(_altitude, _last_update);
+    _climb_rate_filter.update(_altitude + _drift_est, _last_update);
 
-    return _altitude + _alt_offset - _drift_est;
+    return _altitude + _alt_offset + _drift_est;
 }
 
 // return current scale factor that converts from equivalent to true airspeed
@@ -205,44 +205,8 @@ float AP_Baro::get_climb_rate(void)
 // more meaningful units.  Negative time constants disable the filter.
 void AP_Baro::update_drift_estimate(float alt, float dt)
 {
-    if (hal.scheduler->millis() < _cal_time + _drift_init_period * 1000) {
-        _drift_gnd_level += alt - _altitude - _alt_offset;
-        _drift_init_count++;
-    } else {
-        float innov;
-
-        if (_drift_init_count > 0) {
-            _drift_gnd_level /= _drift_init_count;
-            _drift_init_count = 0;
-
-            // We want the estimate to drift from 0 with the same time constant
-            // as everything else, otherwise we get an ugly step in the altitude
-            // once the ground estimation is complete
-            if (_drift_tc <= 0) {
-                _drift_est = 0;
-                return;
-            }
-            _drift_filter.set_time_constant(dt, _drift_tc);
-            _drift_est = _drift_filter.apply(0);
-        }
-
-        if (_drift_tc <= 0) {
-            _drift_est = 0;
-            return;
-        }
-
-        innov = _altitude - _alt_offset - _drift_est - (alt - _drift_gnd_level);
-        // 5 metre gate here to try and guard against sensor glitching etc,
-        // though this is really the caller's responsibility.. TODO: Parameter?
-        if (innov < 5.0) {
-            _drift_filter.set_time_constant(dt, _drift_tc);
-
-            // Assumption here that we don't need to recalc _altitude; i.e.
-            // that the update rate of the filter is slow wrt update of baro
-            // (and update of baro is fast wrt climb rate etc).
-            _drift_est = _drift_filter.apply(innov + _drift_est);
-        }
-    }
+    _drift_filter.set_time_constant(dt, _drift_tc);
+    _drift_est = _drift_filter.apply(alt - _altitude - alt_offset);
 }
 
 
