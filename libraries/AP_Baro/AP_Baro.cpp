@@ -205,8 +205,13 @@ float AP_Baro::get_climb_rate(void)
 // more meaningful units.  Negative time constants disable the filter.
 void AP_Baro::update_drift_estimate(float alt, float dt)
 {
+    /* This ground level doesn't have to be accurate, it's just to get the
+     * returned altitude approximately zero-based. Could/should be home alt? */
+    if (_drift_gnd_level == 0)
+        _drift_gnd_level = alt;
+
     _drift_filter.set_time_constant(dt, _drift_tc);
-    _drift_est = _drift_filter.apply(alt - _altitude - alt_offset);
+    _drift_est = _drift_filter.apply(alt - _altitude - _alt_offset - _drift_gnd_level);
 }
 
 
