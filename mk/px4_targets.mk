@@ -43,8 +43,8 @@ WARNFLAGS = -Wno-psabi -Wno-packed -Wno-error=double-promotion -Wno-error=unused
 # avoid PX4 submodules
 export GIT_SUBMODULES_ARE_EVIL = 1
 
-PX4_MAKE = $(v) GIT_SUBMODULES_ARE_EVIL=1 make -C $(SKETCHBOOK) -f $(PX4_ROOT)/Makefile EXTRADEFINES="$(SKETCHFLAGS) $(WARNFLAGS) "'$(EXTRAFLAGS)' APM_MODULE_DIR=$(SKETCHBOOK) SKETCHBOOK=$(SKETCHBOOK) PX4_ROOT=$(PX4_ROOT) NUTTX_SRC=$(NUTTX_SRC) MAXOPTIMIZATION="-Os" 
-PX4_MAKE_ARCHIVES = make -C $(PX4_ROOT) NUTTX_SRC=$(NUTTX_SRC) archives MAXOPTIMIZATION="-Os" 
+PX4_MAKE = $(v) GIT_SUBMODULES_ARE_EVIL=1 $(MAKE) -C $(SKETCHBOOK) -f $(PX4_ROOT)/Makefile EXTRADEFINES="$(SKETCHFLAGS) $(WARNFLAGS) "'$(EXTRAFLAGS)' APM_MODULE_DIR=$(SKETCHBOOK) SKETCHBOOK=$(SKETCHBOOK) PX4_ROOT=$(PX4_ROOT) NUTTX_SRC=$(NUTTX_SRC) MAXOPTIMIZATION="-Os" 
+PX4_MAKE_ARCHIVES = $(MAKE) -C $(PX4_ROOT) NUTTX_SRC=$(NUTTX_SRC) archives MAXOPTIMIZATION="-Os" 
 
 .PHONY: module_mk
 module_mk:
@@ -96,7 +96,7 @@ px4-archives-clean:
 	$(v) /bin/rm -rf $(PX4_ROOT)/Archives
 
 px4-io-v1: $(PX4_ROOT)/Archives/px4io-v1.export
-	$(v) make -C $(PX4_ROOT) px4io-v1_default
+	$(v) $(MAKE) -C $(PX4_ROOT) px4io-v1_default
 	$(v) /bin/rm -f px4io-v1.bin
 	$(v) cp $(PX4_ROOT)/Images/px4io-v1_default.bin px4io-v1.bin
 	$(v) cp $(PX4_ROOT)/Build/px4io-v1_default.build/firmware.elf px4io-v1.elf
@@ -110,7 +110,7 @@ px4-io-v1: $(PX4_ROOT)/Archives/px4io-v1.export
 
 
 px4-io-v2: $(PX4_ROOT)/Archives/px4io-v2.export
-	$(v) make -C $(PX4_ROOT) px4io-v2_default
+	$(v) $(MAKE) -C $(PX4_ROOT) px4io-v2_default
 	$(v) /bin/rm -f px4io-v2.bin
 	$(v) cp $(PX4_ROOT)/Build/px4io-v2_default.build/firmware.bin px4io-v2.bin
 	$(v) cp $(PX4_ROOT)/Images/px4io-v2_default.bin px4io-v2.bin
